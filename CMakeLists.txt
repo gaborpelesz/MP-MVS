@@ -1,22 +1,28 @@
-cmake_minimum_required (VERSION 2.8)
-project (MPMVS)
-set(CMAKE_BUILD_TYPE "Debug")
+cmake_minimum_required (VERSION 3.22)
+project(MPMVS)
 
-set(PROJECT_PATH ${CMAKE_CURRENT_SOURCE_DIR})#for genenrate config.h file
+set(PROJECT_PATH ${CMAKE_CURRENT_SOURCE_DIR}) #for genenrate config.h file
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/ProjectPath.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/ProjectPath.h)
 
-find_package(OpenCV REQUIRED )
-#set CUDA path
-set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda-11.0")
-find_package(CUDA 11.0 REQUIRED )
+include(CheckLanguage)
+check_language(CUDA)
+if (CMAKE_CUDA_COMPILER)
+    enable_language(CUDA)
+    message(" -- CUDA FOUND")
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -O3 --use_fast_math --maxrregcount=128 --ptxas-options=-v -std=c++11 --compiler-options -Wall -gencode arch=compute_80,code=sm_80")
+    # set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -lineinfo") # for CUDA profiling!
+else()
+    message(FATAL_ERROR "-- CUDA NOT FOUND: Fatal error")
+endif()
+
+find_package(Threads REQUIRED)
+find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(OpenMP REQUIRED)
 if (OPENMP_FOUND)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
-set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-O3 --use_fast_math --maxrregcount=128 --ptxas-options=-v -std=c++11 --compiler-options -Wall -gencode arch=compute_80,code=sm_80)
-message(“CUDA_NVCC_FLAGS:” ${CUDA_NVCC_FLAGS})
 if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-std=c++11)
     add_definitions(-pthread)

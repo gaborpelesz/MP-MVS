@@ -1,8 +1,7 @@
 cmake_minimum_required (VERSION 3.22)
 project(MPMVS)
 
-set(PROJECT_PATH ${CMAKE_CURRENT_SOURCE_DIR}) #for genenrate config.h file
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/ProjectPath.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/ProjectPath.h)
+set(CMAKE_CXX_STANDARD 20)
 
 include(CheckLanguage)
 check_language(CUDA)
@@ -24,7 +23,6 @@ if (OPENMP_FOUND)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(-std=c++11)
     add_definitions(-pthread)
     add_definitions(-Wall)
     add_definitions(-Wextra)

@@ -22,7 +22,6 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-#include "ProjectPath.h"
 //#ifdef BUILD_NCNN
 //#include "SkyRegionDetect.h"
 //#endif

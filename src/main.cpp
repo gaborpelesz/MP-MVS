@@ -1,10 +1,18 @@
 #include "PatchMatch.h"
 #include "utility.h"
 
+#include <filesystem>
+
 std::vector<Scene> Scenes;
-std::string project_path = PROJECT_PATH;
 int main(int argc,char *argv[]) {
-    std::string yaml_path = project_path + "/config/config.yaml";
+    if (argc != 2) {
+        std::cerr << "[ERROR] Project path is a required argument to run.\n";
+        return 1;
+    }
+
+    std::filesystem::path project_path = std::string(argv[1]);
+
+    std::string yaml_path = project_path / "config/config.yaml";
     ConfigParams config = readConfig(yaml_path);
 
     mkdir(config.output_folder.c_str(), 0777);

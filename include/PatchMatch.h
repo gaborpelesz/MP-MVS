@@ -19,7 +19,6 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/imgcodecs.hpp"
 
-#include "main.h"
 #include "utility.h"
 
 #ifdef BUILD_NCNN

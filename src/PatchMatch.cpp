@@ -1,5 +1,7 @@
 #include "PatchMatch.h"
 
+#include <fstream>
+
 #ifdef BUILD_NCNN
 void GenerateSkyRegionMask(std::vector<Scene> &Scenes, std::string &project_path, const ConfigParams &config){
     std::string param_path = project_path + "/segment_model/skysegsmall_sim-opt-fp16.param";

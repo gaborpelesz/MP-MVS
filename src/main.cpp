@@ -1,4 +1,6 @@
-#include "main.h"
+#include "PatchMatch.h"
+#include "utility.h"
+
 using namespace std;
 
 std::vector<Scene> Scenes;

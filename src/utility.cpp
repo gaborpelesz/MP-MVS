@@ -1,5 +1,6 @@
 #include "utility.h"
 
+#include <filesystem>
 #include <fstream>
 
 void checkpath(std::string &path){
@@ -224,9 +225,13 @@ bool  readDepthDmb(const std::string file_path, cv::Mat_<float> &depth)
     return true;
 }
 
-int writeDepthDmb(const std::string file_path, const cv::Mat_<float> &depth)
+int writeDepthDmb(const std::string& file_path, const cv::Mat_<float> &depth)
 {
+    std::filesystem::create_directories(
+        std::filesystem::absolute(std::filesystem::path(file_path)).parent_path());
+
     FILE *outimage;
+    std::cout << "writing image: " << file_path.c_str()  << "\n";
     outimage = fopen(file_path.c_str(), "wb");
 
     int32_t type = 1;
@@ -482,18 +487,19 @@ void saveDmbAsJpg(ConfigParams &config, size_t num_images, bool hist_enhance = t
     std::string dense_folder = config.input_folder;
     std::string image_folder = dense_folder + std::string("/images");
     std::string cam_folder = dense_folder + std::string("/cams");
+    std::string save_folder = config.output_folder + "/save";
     std::cout << "Start save data as jpg" << std::endl;
-    mkdir("/home/xuan/MP-MVS/result/dmap/", 0777);
+    std::filesystem::create_directories(save_folder);
     for (size_t i = 0; i < num_images; ++i) {
-        std::stringstream read_folder,save_folder;
-        read_folder << dense_folder << "/MPMVS" << "/2333_" << std::setw(8) << std::setfill('0') << i;
-        save_folder << "/home/xuan/MP-MVS/result/dmap/" << i+1 << ".dmb";
+        std::stringstream read_folder,save_file;
+        read_folder << config.output_folder << "/2333_" << std::setw(8) << std::setfill('0') << i;
+        save_file << save_folder << i+1 << ".dmb";
         if(config.saveDmb){
             std::string depth_path = read_folder.str() + "/depths.dmb";
             std::string save_path = read_folder.str() + "/depths.jpg";
             cv::Mat_<float> dmap;
             readDepthDmb(depth_path, dmap);
-            writeDepthDmb(save_folder.str(),dmap);
+            writeDepthDmb(save_file.str(),dmap);
             SaveDmb(dmap, save_path, hist_enhance);
         }
         if(config.saveProirDmb && (config.planar_prior || config.geomPlanarPrior)){

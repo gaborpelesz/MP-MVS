@@ -89,7 +89,7 @@ std::vector<double> DmapEval(const std::string data_folder,const std::string GT_
 std::vector<double> ColmapEval(const std::string data_folder,const std::string GT_folder,float error);
 bool readColmapDmap(const std::string file_path, cv::Mat_<float> &depth);
 bool readDepthDmb(const std::string file_path, cv::Mat_<float> &depth);
-int writeDepthDmb(const std::string file_path, const cv::Mat_<float> &depth);
+int writeDepthDmb(const std::string& file_path, const cv::Mat_<float> &depth);
 bool readNormalDmb (const std::string file_path, cv::Mat_<cv::Vec3f> &normal);
 int writeNormalDmb(const std::string file_path, const cv::Mat_<cv::Vec3f> &normal);
 void GetHist(cv::Mat gray);

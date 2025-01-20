@@ -327,7 +327,7 @@ void RunFusion(const ConfigParams &config, const std::vector<Scene> &Scenes){//c
         Camera camera = ReadCamera(cam_path.str());
 
         std::stringstream result_path;
-        result_path << dense_folder << "/MPMVS" << "/2333_" << std::setw(8) << std::setfill('0') << Scenes[i].refID;
+        result_path << config.output_folder << "/2333_" << std::setw(8) << std::setfill('0') << Scenes[i].refID;
         std::string result_folder = result_path.str();
         std::string suffix = "/depths.dmb";
         std::string depth_path = result_folder + suffix;
@@ -943,7 +943,7 @@ void PatchMatchCUDA::PatchMatchInit(std::vector<Scene> Scenes,const int ID){
         for (size_t i = 1; i < num_src_images; ++i) {
             Scene& scene = Scenes[srcID[i]];
             std::stringstream result_path;
-            result_path << input_folder << "/MPMVS"  << "/2333_" << std::setw(8) << std::setfill('0') << srcID[i];
+            result_path << output_folder  << "/2333_" << std::setw(8) << std::setfill('0') << srcID[i];
             std::string result_folder = result_path.str();
             std::string depth_path = result_folder + suffix;
             readDepthDmb(depth_path, scene.depth);
@@ -1052,7 +1052,7 @@ void PatchMatchCUDA::CudaMemInit(Scene &scene){
         checkCudaCall(cudaMemcpy(cudaTextureDepths, textureDepths.data(), sizeof(cudaTextureObject_t)*(num_img-1), cudaMemcpyHostToDevice));
         //read normals and costs
         std::stringstream result_path;
-        result_path << input_folder << "/MPMVS" << "/2333_" << std::setw(8) << std::setfill('0') << scene.refID;
+        result_path << output_folder << "/2333_" << std::setw(8) << std::setfill('0') << scene.refID;
         std::string result_folder = result_path.str();
         std::string depth_path = result_folder + "/depths.dmb";
         std::string normal_path = result_folder + "/normals.dmb";
